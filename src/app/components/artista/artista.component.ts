@@ -11,11 +11,14 @@ import { SpotifyService } from '../../services/spotify.service';
 export class ArtistaComponent  {
   artista: any = {};
   cargando: boolean = true;
+  topTracks: any[] = [];
+
   constructor( private router: ActivatedRoute,
                private spotify: SpotifyService ) {
 
     this.router.params.subscribe( items => {
       this.getArtista( items['id' ]);
+      this.geTopTracks( items['id' ]);
     });
   }
 
@@ -24,9 +27,14 @@ export class ArtistaComponent  {
       .subscribe( artista => {
         this.artista = artista;
         this.cargando = false;
-        console.log(artista);
-        
-      });
+    });
+  }
+  geTopTracks ( id: string) {
+    this.spotify.geTopTracks( id )
+      .subscribe( topTracks => {
+        console.log(topTracks);
+        this.topTracks = topTracks;
+      } );
   }
   
   
